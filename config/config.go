@@ -3,8 +3,28 @@ package config
 import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/go-xgo/xgo/core/x"
+	"github.com/spf13/pflag"
 )
 import "github.com/spf13/viper"
+
+var (
+	confPath string
+)
+
+func init() {
+	pflag.StringVarP(&confPath, "conf", "c", "", "config file path")
+}
+
+func New[T any]() (*T, error) {
+	if err := Load(confPath); err != nil {
+		return nil, err
+	}
+	t := new(T)
+	if err := viper.Unmarshal(&t); err != nil {
+		return nil, err
+	}
+	return t, nil
+}
 
 func Load(confPath string) error {
 	var err error
