@@ -42,12 +42,25 @@ var (
 )
 
 func init() {
-	defaultLogger = zapr.NewLogger(buildZapLogger(NewDefaultConfig()))
+	defaultLogger, _ = New(NewDefaultConfig())
+}
+
+func Init(cfg *Config) error {
+	l, err := New(cfg)
+	if err != nil {
+		return err
+	}
+	SetDefaultLogger(l)
+	return nil
 }
 
 // DefaultLogger returns the default logger.
 func DefaultLogger() logr.Logger {
 	return defaultLogger
+}
+
+func New(cfg *Config) (logr.Logger, error) {
+	return zapr.NewLogger(buildZapLogger(cfg)), nil
 }
 
 // SetDefaultLogger sets the default logger for package log.
