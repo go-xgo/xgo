@@ -1,7 +1,8 @@
 package main
 
 import (
-	"go-xgo/xgo/cmd/xgo/internal/run"
+	"github.com/go-xgo/xgo/cmd/xgo/internal/run"
+	"github.com/go-xgo/xgo/cmd/xgo/internal/upgrade"
 	"log"
 )
 import "github.com/spf13/cobra"
@@ -15,6 +16,7 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(run.CmdRun)
+	rootCmd.AddCommand(upgrade.CmdUpgrade)
 }
 
 func main() {
