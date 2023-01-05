@@ -1,9 +1,10 @@
-package database
+package xdb
 
 import (
 	"errors"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
 var (
@@ -28,7 +29,12 @@ func New(cfg *Config) (*gorm.DB, error) {
 	if cfg.Dsn == "" {
 		return nil, errors.New("empty dsn")
 	}
-	db, err := gorm.Open(mysql.Open(cfg.Dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(cfg.Dsn), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
+		QueryFields: true,
+	})
 	if err != nil {
 		return nil, err
 	}
